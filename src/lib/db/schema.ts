@@ -135,24 +135,34 @@ export const SEED_ORIGINS: SeedOrigin[] = [
   },
 ];
 
-let schemaReady: Promise<void> | null = null;
+/**
+ * Schema application is memoised per process, not per module instance.
+ *
+ * Next can evaluate this module more than once per process, and re-running the
+ * DDL is cheap but holding two "already applied" flags is worse than useless —
+ * it lets a second registry observe a half-applied schema.
+ */
+interface SchemaGlobals {
+  __mintlineSchema?: Promise<void>;
+}
 
-/** Apply the schema. Safe to call on every request. */
+const schemaGlobals = globalThis as unknown as SchemaGlobals;
+
 export async function ensureSchema(sql: SqlExecutor): Promise<void> {
-  if (!schemaReady) {
-    schemaReady = (async () => {
+  if (!schemaGlobals.__mintlineSchema) {
+    schemaGlobals.__mintlineSchema = (async () => {
       for (const statement of SCHEMA_STATEMENTS) {
         await sql.query(statement);
       }
     })().catch((error) => {
-      schemaReady = null;
+      schemaGlobals.__mintlineSchema = undefined;
       throw error;
     });
   }
-  return schemaReady;
+  return schemaGlobals.__mintlineSchema;
 }
 
 /** Test hook: forget that the schema was applied. */
 export function resetSchemaCache(): void {
-  schemaReady = null;
+  schemaGlobals.__mintlineSchema = undefined;
 }

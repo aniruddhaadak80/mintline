@@ -167,18 +167,16 @@ export function newOriginId(): string {
  * Seeding
  * ------------------------------------------------------------------ */
 
-let seeded: Promise<void> | null = null;
+/** Process-wide, for the same reason as the adapter cache in `sql.ts`. */
+interface SeedGlobals {
+  __mintlineSeeded?: Promise<void>;
+}
 
-/**
- * Idempotent first-run seed.
- *
- * Seed rows live under the reserved `registry` session so every visitor sees
- * them, and their ids are `seed:`-prefixed so a generated id can never collide.
- * They are never claimed by, or attributable to, an anonymous session.
- */
+const seedGlobals = globalThis as unknown as SeedGlobals;
+
 export async function ensureSeeded(sql: SqlExecutor): Promise<void> {
-  if (!seeded) {
-    seeded = (async () => {
+  if (!seedGlobals.__mintlineSeeded) {
+    seedGlobals.__mintlineSeeded = (async () => {
       for (const origin of SEED_ORIGINS) {
         const existing = await sql.query<{ id: string }>(
           "SELECT id FROM origins WHERE id = $1",
@@ -238,16 +236,16 @@ export async function ensureSeeded(sql: SqlExecutor): Promise<void> {
         );
       }
     })().catch((error) => {
-      seeded = null;
+      seedGlobals.__mintlineSeeded = undefined;
       throw error;
     });
   }
-  return seeded;
+  return seedGlobals.__mintlineSeeded;
 }
 
 /** Test hook. */
 export function resetSeedCache(): void {
-  seeded = null;
+  seedGlobals.__mintlineSeeded = undefined;
 }
 
 /* ------------------------------------------------------------------ *

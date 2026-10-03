@@ -84,11 +84,25 @@ async function createNeonClient(url: string): Promise<SqlClient> {
 
 const DATA_DIR = process.env.MINTLINE_PGLITE_DIR ?? ".mintline-data";
 
-let pglitePromise: Promise<PGlite> | null = null;
+/**
+ * Process-wide singletons.
+ *
+ * These live on `globalThis`, not in module scope, because Next's server
+ * runtime can evaluate a module more than once per process (separate module
+ * registries per render path). A module-level cache then yields two PGlite
+ * instances against the same data directory, which deadlocks on the file lock
+ * and surfaces as intermittent 500s from server components.
+ */
+interface SqlGlobals {
+  __mintlinePglite?: Promise<PGlite>;
+  __mintlineClient?: Promise<SqlClient>;
+}
+
+const globals = globalThis as unknown as SqlGlobals;
 
 async function getPGlite(): Promise<PGlite> {
-  if (!pglitePromise) {
-    pglitePromise = (async () => {
+  if (!globals.__mintlinePglite) {
+    globals.__mintlinePglite = (async () => {
       if (DATA_DIR === ":memory:") return new PGlite();
       try {
         return new PGlite(DATA_DIR);
@@ -96,9 +110,12 @@ async function getPGlite(): Promise<PGlite> {
         // A read-only or unwritable directory must not break `npm run dev`.
         return new PGlite();
       }
-    })();
+    })().catch((error) => {
+      globals.__mintlinePglite = undefined;
+      throw error;
+    });
   }
-  return pglitePromise;
+  return globals.__mintlinePglite;
 }
 
 async function createPgliteClient(): Promise<SqlClient> {
@@ -140,20 +157,18 @@ async function createPgliteClient(): Promise<SqlClient> {
  * Selection
  * ------------------------------------------------------------------ */
 
-let clientPromise: Promise<SqlClient> | null = null;
-
 export async function getSql(): Promise<SqlClient> {
-  if (!clientPromise) {
-    clientPromise = (async () => {
+  if (!globals.__mintlineClient) {
+    globals.__mintlineClient = (async () => {
       const url = process.env.DATABASE_URL?.trim();
       if (url) return createNeonClient(url);
       return createPgliteClient();
     })().catch((error) => {
-      clientPromise = null;
+      globals.__mintlineClient = undefined;
       throw error;
     });
   }
-  return clientPromise;
+  return globals.__mintlineClient;
 }
 
 /**
@@ -161,9 +176,9 @@ export async function getSql(): Promise<SqlClient> {
  * not need it.
  */
 export async function resetSql(): Promise<void> {
-  if (clientPromise) {
-    const client = await clientPromise.catch(() => null);
-    clientPromise = null;
+  if (globals.__mintlineClient) {
+    const client = await globals.__mintlineClient.catch(() => null);
+    globals.__mintlineClient = undefined;
     if (client) await client.close();
   }
 }
