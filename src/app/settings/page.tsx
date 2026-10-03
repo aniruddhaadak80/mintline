@@ -90,7 +90,7 @@ export default async function SettingsPage() {
       {/* Config table */}
       <section className="mt-10">
         <h2 className="marginalia">how this deployment is wired</h2>
-        <div className="mt-4 overflow-x-auto">
+        <div className="scroller mt-4">
           <table className="w-full min-w-[42rem] border-collapse text-sm">
             <caption className="sr-only">Configuration and method reference</caption>
             <thead>

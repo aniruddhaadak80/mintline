@@ -1,9 +1,9 @@
-"use client";
+﻿"use client";
 
 import { useCallback, useEffect, useState } from "react";
-import Link from "next/link";
 import { TOOLS } from "@/lib/mcp/server";
 import { SAMPLE_MINTS } from "@/lib/solana/fallback";
+import { SITE } from "@/lib/config";
 
 interface ConsoleEntry {
   id: number;
@@ -35,7 +35,7 @@ function pretty(value: unknown): string {
  * Every button issues a real JSON-RPC request to `/api/mcp` and prints the real
  * response, including JSON-RPC error objects. The mutation presets return an
  * origin id, and that id is threaded into the later presets, so the sequence
- * read → mutate → read → verify is reproducible by clicking.
+ * read â†’ mutate â†’ read â†’ verify is reproducible by clicking.
  */
 export function AgentConsole() {
   const [entries, setEntries] = useState<ConsoleEntry[]>([]);
@@ -144,13 +144,13 @@ export function AgentConsole() {
     },
     {
       label: "register_origin",
-      hint: "MUTATING — writes through the UI service layer",
+      hint: "MUTATING â€” writes through the UI service layer",
       readOnly: false,
       run: registerOrigin,
     },
     {
       label: "record_verdict",
-      hint: "MUTATING — needs an id from register_origin",
+      hint: "MUTATING â€” needs an id from register_origin",
       readOnly: false,
       needsOrigin: true,
       run: () =>
@@ -161,7 +161,7 @@ export function AgentConsole() {
     },
     {
       label: "share_origin",
-      hint: "MUTATING — issues a public dossier link",
+      hint: "MUTATING â€” issues a public dossier link",
       readOnly: false,
       needsOrigin: true,
       run: async () => {
@@ -195,7 +195,7 @@ export function AgentConsole() {
     },
     {
       label: "retire_origin",
-      hint: "DESTRUCTIVE — tombstones the record",
+      hint: "DESTRUCTIVE â€” tombstones the record",
       readOnly: false,
       needsOrigin: true,
       run: () => call("retire_origin", "tools/call", { name: "retire_origin", arguments: { origin_id: originId } }),
@@ -252,6 +252,7 @@ export function AgentConsole() {
               <button
                 key={preset.label}
                 type="button"
+                data-testid={`tool-${preset.label}`}
                 onClick={() => void preset.run()}
                 disabled={busy || blocked}
                 title={preset.hint}
@@ -267,7 +268,7 @@ export function AgentConsole() {
                 </span>
                 {blocked ? (
                   <span className="mt-1 block text-[0.65rem] normal-case text-oxide-bright">
-                    needs an origin id — run register_origin first
+                    needs an origin id â€” run register_origin first
                   </span>
                 ) : null}
               </button>
@@ -302,7 +303,7 @@ export function AgentConsole() {
                       entry.ok ? "text-verdigris" : "text-oxide-bright"
                     }`}
                   >
-                    {entry.ok ? "200" : "error"} · {entry.method}
+                    {entry.ok ? "200" : "error"} Â· {entry.method}
                   </span>
                   <span className="font-mono text-[0.65rem] text-bone-faint">{entry.ms}ms</span>
                 </div>
@@ -327,12 +328,10 @@ export function AgentConsole() {
       </section>
 
       <p className="font-mono text-[0.7rem] leading-relaxed text-bone-faint">
-        Point any MCP client at{" "}
-        <code className="text-brass">{typeof window === "undefined" ? "/api/mcp" : `${window.location.origin}/api/mcp`}</code>{" "}
-        — the published manifest is at{" "}
-        <Link href="/mcp.json" className="text-brass underline underline-offset-4">
-          /mcp.json
-        </Link>
+Point any MCP client at{" "}
+        <code className="text-brass">{`${SITE.liveUrl}/api/mcp`}</code>{" "}
+        â€” the published manifest is at{" "}
+        <a href="/mcp.json" className="text-brass underline underline-offset-4">`n          /mcp.json`n        </a>
         .
       </p>
     </div>

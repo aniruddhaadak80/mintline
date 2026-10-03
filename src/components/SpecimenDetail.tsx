@@ -481,7 +481,7 @@ export function SpecimenDetail({ initialOrigin }: { initialOrigin: OriginRecord 
           ) : events.length === 0 ? (
             <p className="mt-4 font-mono text-xs text-bone-faint">No events recorded.</p>
           ) : (
-            <div className="mt-4 overflow-x-auto">
+            <div className="scroller mt-4">
               <table className="w-full min-w-[36rem] border-collapse text-sm">
                 <caption className="sr-only">Audit events for this origin</caption>
                 <thead>

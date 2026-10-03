@@ -3,6 +3,7 @@ import { Archivo, DM_Mono } from "next/font/google";
 import { SITE } from "@/lib/config";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import "./globals.css";
 
 const archivo = Archivo({
   subsets: ["latin"],

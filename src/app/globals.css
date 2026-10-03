@@ -149,6 +149,30 @@ body {
   font-family: var(--font-mono);
   font-size: 0.75rem;
   color: var(--color-bone-dim);
+  /* Raw JSON and 96-character seals contain no break opportunities, so they
+     must wrap or scroll internally or they widen the whole page on mobile. */
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
+/*
+ * Horizontal scroll container for wide tables and code.
+ *
+ * `min-w-0` matters: a grid or flex child defaults to `min-width: auto`, which
+ * refuses to shrink below its content's min-content width and pushes the whole
+ * document sideways on narrow viewports.
+ */
+@utility scroller {
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+@utility scroller-child {
+  min-width: 0;
 }
 
 /* ---------------------------------------------------------------- *

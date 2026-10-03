@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import { getSql } from "@/lib/db/sql";
 import { ensureSchema } from "@/lib/db/schema";
@@ -87,7 +87,7 @@ export default async function ChainPage() {
         {rows.length === 0 ? (
           <p className="mt-4 font-mono text-xs text-bone-faint">No claims to replay yet.</p>
         ) : (
-          <div className="mt-4 overflow-x-auto">
+          <div className="scroller mt-4">
             <table className="w-full min-w-[44rem] border-collapse text-sm">
               <caption className="sr-only">Replay result for every visible origin claim</caption>
               <thead>
@@ -113,7 +113,7 @@ export default async function ChainPage() {
                     </td>
                     <td className="py-3 pr-3 font-mono text-[0.68rem] uppercase tracking-[0.1em] text-bone-dim">
                       {row.status}
-                      {row.retired ? " · tombstone" : ""}
+                      {row.retired ? " Â· tombstone" : ""}
                     </td>
                     <td className="py-3 pr-3 text-right font-mono text-xs tabular-nums text-bone-dim">
                       {row.checked}
@@ -124,7 +124,7 @@ export default async function ChainPage() {
                         <span className="text-verdigris">verified</span>
                       ) : (
                         <span className="text-oxide-bright">
-                          broken at seq {row.brokenAtSeq} — {row.brokenReason}
+                          broken at seq {row.brokenAtSeq} â€” {row.brokenReason}
                         </span>
                       )}
                     </td>
@@ -138,7 +138,7 @@ export default async function ChainPage() {
 
       <section className="specimen mt-10 p-5">
         <h2 className="marginalia">the rule</h2>
-        <pre className="well mt-3 overflow-x-auto p-3 text-[0.72rem] leading-relaxed">
+        <pre className="well mt-3 p-3 text-[0.72rem] leading-relaxed">
 {`genesis    = SHA-384(UTF-8("mintline/genesis/v1"))
 seal(n)    = SHA-384( UTF-8(seal(n-1)) || canonicalJson(event(n)) )
 
@@ -157,7 +157,7 @@ canonicalJson  recursive key sort, stable arrays, ISO-8601 UTC,
           href="/api/integrity/replay"
           className="font-mono text-xs uppercase tracking-[0.14em] text-brass underline underline-offset-4"
         >
-          Replay every chain over HTTP →
+          Replay every chain over HTTP â†’
         </Link>
       </p>
     </div>
