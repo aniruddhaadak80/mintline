@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import Link from "next/link";
@@ -20,7 +20,7 @@ export interface RegistryFilterState {
 const SORTS: Array<{ value: Sort; label: string }> = [
   { value: "recent", label: "Newest" },
   { value: "score", label: "Score" },
-  { value: "name", label: "Aâ€“Z" },
+  { value: "name", label: "A–Z" },
 ];
 
 const STATUSES: Array<{ value: Status; label: string }> = [
@@ -201,8 +201,8 @@ export function RegistryWorkspace({
 
         <p className="marginalia mt-4" role="status" data-testid="registry-count">
           {initial.total} claim{initial.total === 1 ? "" : "s"} on file
-          {reference > 0 ? ` Â· ${reference} reference` : ""}
-          {filters.mineOnly ? " Â· this session only" : ""}
+          {reference > 0 ? ` · ${reference} reference` : ""}
+          {filters.mineOnly ? " · this session only" : ""}
         </p>
       </section>
 
@@ -288,7 +288,7 @@ export function RegistryWorkspace({
                 data-testid="create-submit"
                 className="border border-brass bg-brass px-4 py-2 font-mono text-xs uppercase tracking-[0.14em] text-ink transition-colors hover:bg-brass-bright disabled:opacity-50"
               >
-                {createState.phase === "saving" ? "Assaying and filingâ€¦" : "Register origin"}
+                {createState.phase === "saving" ? "Assaying and filing…" : "Register origin"}
               </button>
 
               {createState.phase === "done" ? (
@@ -368,7 +368,7 @@ export function RegistryWorkspace({
                   <div className="flex shrink-0 items-center gap-4">
                     <span className="font-mono text-[0.68rem] uppercase tracking-[0.12em] text-bone-faint">
                       {origin.status}
-                      {origin.deletedAt ? " Â· tombstone" : ""}
+                      {origin.deletedAt ? " · tombstone" : ""}
                     </span>
                     {style ? (
                       <span className={`font-mono text-[0.68rem] uppercase tracking-[0.1em] ${style.color}`}>
@@ -380,7 +380,7 @@ export function RegistryWorkspace({
                       </span>
                     )}
                     <span className="w-16 text-right font-mono text-sm tabular-nums text-brass">
-                      {origin.assay ? origin.assay.score.toFixed(1) : "â€”"}
+                      {origin.assay ? origin.assay.score.toFixed(1) : "—"}
                     </span>
                     <span className="hidden w-28 text-right font-mono text-[0.65rem] text-bone-faint lg:block">
                       {shortSeal(origin.chainHead)}
@@ -395,7 +395,7 @@ export function RegistryWorkspace({
         {initial.total > pageSize ? (
           <div className="mt-4 flex items-center justify-between">
             <p className="font-mono text-xs text-bone-faint">
-              showing {pageStart}â€“{pageEnd} of {initial.total}
+              showing {pageStart}–{pageEnd} of {initial.total}
             </p>
             <div className="flex gap-2">
               <button

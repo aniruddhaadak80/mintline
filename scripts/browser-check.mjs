@@ -290,12 +290,20 @@ console.log(`\nMintline browser pass â€” ${BASE}\n`);
   await page.goto(`${BASE}/`, { waitUntil: "domcontentloaded", timeout: 90_000 });
   await page.screenshot({ path: `${SHOTS}/10-mobile-landing.png`, fullPage: false });
 
-  // The mobile menu must contain the same links as the desktop bar.
+  // The mobile menu is a client component, so wait for hydration before
+  // clicking rather than depending on load timing.
   const menuButton = page.getByRole("button", { name: /open menu/i });
+  await menuButton.waitFor({ state: "attached", timeout: 60_000 });
   check("mobile: a menu button is exposed", (await menuButton.count()) > 0);
 
-  await menuButton.click();
-  await page.waitForSelector("#mobile-nav", { timeout: 30_000 });
+  let menuOpened = false;
+  for (let attempt = 0; attempt < 3 && !menuOpened; attempt += 1) {
+    await menuButton.click({ timeout: 30_000 }).catch(() => undefined);
+    menuOpened = (await page.locator("#mobile-nav").count()) > 0;
+    if (!menuOpened) await page.waitForTimeout(1_500);
+  }
+  check("mobile: the menu opens", menuOpened);
+
   const mobileLinks = await page.locator("#mobile-nav a").count();
   check("mobile: the menu opens with links", mobileLinks >= 5, `${mobileLinks} links`);
 

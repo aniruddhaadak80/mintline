@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -142,7 +142,7 @@ export function SpecimenDetail({ initialOrigin }: { initialOrigin: OriginRecord 
       setEvents(null);
       setMessage({
         tone: "ok",
-        text: `Re-assayed with ${payload.comparator} â€” ${payload.result.score.toFixed(2)} / 100.`,
+        text: `Re-assayed with ${payload.comparator} — ${payload.result.score.toFixed(2)} / 100.`,
       });
       router.refresh();
     } catch (error) {
@@ -219,7 +219,7 @@ export function SpecimenDetail({ initialOrigin }: { initialOrigin: OriginRecord 
             <p className="marginalia">specimen {origin.id}</p>
             <h1 className="mt-1 text-2xl text-bone sm:text-3xl">{origin.name}</h1>
             <p className="mt-1 font-mono text-xs text-bone-faint">
-              {origin.symbol ? `${origin.symbol} Â· ` : ""}
+              {origin.symbol ? `${origin.symbol} · ` : ""}
               <a
                 href={`https://solscan.io/token/${origin.mint}`}
                 target="_blank"
@@ -235,7 +235,7 @@ export function SpecimenDetail({ initialOrigin }: { initialOrigin: OriginRecord 
               </span>
               {readOnly ? (
                 <span className="border border-verdigris/50 px-2 py-0.5 font-mono text-[0.65rem] uppercase tracking-[0.12em] text-verdigris">
-                  reference registry Â· read only
+                  reference registry · read only
                 </span>
               ) : null}
               {deleted ? (
@@ -283,7 +283,7 @@ export function SpecimenDetail({ initialOrigin }: { initialOrigin: OriginRecord 
             className="border border-brass/40 px-4 py-2 font-mono text-xs uppercase tracking-[0.14em] text-bone-dim transition-colors hover:border-brass hover:text-brass disabled:opacity-40"
             data-testid="reassay"
           >
-            {busy === "assay" ? "Re-assayingâ€¦" : "Re-assay live"}
+            {busy === "assay" ? "Re-assaying…" : "Re-assay live"}
           </button>
           {!readOnly ? (
             <button
@@ -363,7 +363,7 @@ export function SpecimenDetail({ initialOrigin }: { initialOrigin: OriginRecord 
               </>
             ) : (
               <p className="mt-3 text-sm text-bone-dim">
-                No assay stored yet. Use â€œRe-assay liveâ€ to compute one against current chain data.
+                No assay stored yet. Use “Re-assay live” to compute one against current chain data.
               </p>
             )}
           </section>
@@ -417,7 +417,7 @@ export function SpecimenDetail({ initialOrigin }: { initialOrigin: OriginRecord 
                     data-testid="retire"
                     className="border border-bone-faint/50 px-4 py-2 font-mono text-xs uppercase tracking-[0.14em] text-bone-dim transition-colors hover:border-oxide hover:text-oxide-bright disabled:opacity-40"
                   >
-                    {busy === "retire" ? "Retiringâ€¦" : "Retire claim"}
+                    {busy === "retire" ? "Retiring…" : "Retire claim"}
                   </button>
                 </div>
               </section>
@@ -455,7 +455,7 @@ export function SpecimenDetail({ initialOrigin }: { initialOrigin: OriginRecord 
               onClick={() => void loadChain()}
               className="font-mono text-xs uppercase tracking-[0.12em] text-bone-dim underline underline-offset-4 hover:text-brass"
             >
-              {busy === "chain" ? "Replayingâ€¦" : "Replay now"}
+              {busy === "chain" ? "Replaying…" : "Replay now"}
             </button>
           </div>
 
@@ -468,7 +468,7 @@ export function SpecimenDetail({ initialOrigin }: { initialOrigin: OriginRecord 
             >
               {replay.ok
                 ? `Chain verified: ${replay.checked} event(s), no broken link. Head ${shortSeal(replay.headSeal)}.`
-                : `BROKEN at seq ${replay.brokenAtSeq} â€” ${replay.brokenReason}`}
+                : `BROKEN at seq ${replay.brokenAtSeq} — ${replay.brokenReason}`}
             </div>
           ) : null}
 
@@ -477,7 +477,7 @@ export function SpecimenDetail({ initialOrigin }: { initialOrigin: OriginRecord 
           ) : null}
 
           {events === null ? (
-            <p className="mt-4 font-mono text-xs text-bone-faint">Reading chain eventsâ€¦</p>
+            <p className="mt-4 font-mono text-xs text-bone-faint">Reading chain events…</p>
           ) : events.length === 0 ? (
             <p className="mt-4 font-mono text-xs text-bone-faint">No events recorded.</p>
           ) : (

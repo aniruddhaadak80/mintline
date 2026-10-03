@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import { SAMPLE_MINTS } from "@/lib/solana/fallback";
 import { SOURCE_INFO } from "@/lib/solana/live";
 import { LEXICAL_MODEL_ID } from "@/lib/engine/similarity";
@@ -43,7 +43,7 @@ export default async function SettingsPage() {
     ["Price corroboration", "Jupiter lite price API v3, compared against DexScreener to surface divergence between two independent readings."],
     ["Off-chain metadata", "The JSON at the token's `uri`, fetched only from an allow-list of IPFS/Arweave/NFT-S.Storage hosts over HTTPS."],
     ["Server comparator", `${LEXICAL_MODEL_ID}. Deterministic, no model, no network.`],
-    ["Browser comparator", `${EMBEDDING_MODEL_ID} â€” ${EMBEDDING_PARAMETERS} parameters, ${EMBEDDING_LICENSE}, ${EMBEDDING_DOWNLOAD_HINT}.`],
+    ["Browser comparator", `${EMBEDDING_MODEL_ID} — ${EMBEDDING_PARAMETERS} parameters, ${EMBEDDING_LICENSE}, ${EMBEDDING_DOWNLOAD_HINT}.`],
     ["Engine", `${ENGINE_VERSION}. Six weighted factors summing to 1.00, published in every response.`],
     ["Chain rule", `genesis = SHA-384(UTF-8("${GENESIS_SALT}")); seal(n) = SHA-384(UTF-8(seal(n-1)) || canonicalJson(event(n))).`],
     ["Agent interface", `JSON-RPC 2.0 at ${SITE.liveUrl}/api/mcp, protocol ${PROTOCOL_VERSION}, ${TOOLS.length} tools.`],
@@ -57,7 +57,7 @@ export default async function SettingsPage() {
         <h1 className="mt-2 text-3xl text-bone sm:text-4xl">Settings</h1>
         <p className="mt-3 max-w-2xl text-sm leading-relaxed text-bone-dim">
           Every value that decides what Mintline reports, and where it came from. Nothing on this page
-          is a preference you can toggle â€” it is the actual configuration this deployment is running.
+          is a preference you can toggle — it is the actual configuration this deployment is running.
         </p>
       </header>
 
@@ -159,14 +159,14 @@ export default async function SettingsPage() {
         <div className="specimen p-5">
           <h2 className="marginalia">security model</h2>
           <ul className="mt-3 space-y-2 text-sm leading-relaxed text-bone-dim">
-            <li>Â· All SQL is parameterized; no string interpolation of user input into a query.</li>
-            <li>Â· Every write is scoped to a signed session id and validated before it reaches SQL.</li>
-            <li>Â· Error responses never include stack traces, SQL or environment values.</li>
-            <li>Â· Metadata JSON is fetched only from an HTTPS host allow-list, with a size and time cap.</li>
-            <li>Â· Rate limits are a fixed window held in process memory. On serverless this is per
+            <li>· All SQL is parameterized; no string interpolation of user input into a query.</li>
+            <li>· Every write is scoped to a signed session id and validated before it reaches SQL.</li>
+            <li>· Error responses never include stack traces, SQL or environment values.</li>
+            <li>· Metadata JSON is fetched only from an HTTPS host allow-list, with a size and time cap.</li>
+            <li>· Rate limits are a fixed window held in process memory. On serverless this is per
               instance, so it stops casual scripting, not a determined flood. A global limit needs a
               hosted store.</li>
-            <li>Â· No secrets ship to the client; the browser model runs locally and sends nothing back.</li>
+            <li>· No secrets ship to the client; the browser model runs locally and sends nothing back.</li>
           </ul>
         </div>
 
@@ -183,7 +183,7 @@ export default async function SettingsPage() {
                   href={`/assay?mint=${sample.mint}`}
                   className="font-mono text-xs text-bone underline decoration-brass/40 underline-offset-4 hover:text-brass"
                 >
-                  {sample.symbol} â€” {sample.label}
+                  {sample.symbol} — {sample.label}
                 </Link>
                 <p className="mt-0.5 break-all font-mono text-[0.65rem] text-bone-faint">{sample.mint}</p>
               </li>

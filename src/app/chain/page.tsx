@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { getSql } from "@/lib/db/sql";
 import { ensureSchema } from "@/lib/db/schema";
@@ -113,7 +113,7 @@ export default async function ChainPage() {
                     </td>
                     <td className="py-3 pr-3 font-mono text-[0.68rem] uppercase tracking-[0.1em] text-bone-dim">
                       {row.status}
-                      {row.retired ? " Â· tombstone" : ""}
+                      {row.retired ? " · tombstone" : ""}
                     </td>
                     <td className="py-3 pr-3 text-right font-mono text-xs tabular-nums text-bone-dim">
                       {row.checked}
@@ -124,7 +124,7 @@ export default async function ChainPage() {
                         <span className="text-verdigris">verified</span>
                       ) : (
                         <span className="text-oxide-bright">
-                          broken at seq {row.brokenAtSeq} â€” {row.brokenReason}
+                          broken at seq {row.brokenAtSeq} — {row.brokenReason}
                         </span>
                       )}
                     </td>
@@ -157,7 +157,7 @@ canonicalJson  recursive key sort, stable arrays, ISO-8601 UTC,
           href="/api/integrity/replay"
           className="font-mono text-xs uppercase tracking-[0.14em] text-brass underline underline-offset-4"
         >
-          Replay every chain over HTTP â†’
+          Replay every chain over HTTP →
         </Link>
       </p>
     </div>

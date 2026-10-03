@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
 # Mintline
 
@@ -19,7 +19,11 @@ replay.
 [![Integrity](https://img.shields.io/badge/chain-SHA--384%20per%20record-fb7185)](#-integrity)
 [![Tests](https://img.shields.io/badge/tests-151%20passing-brightgreen)](https://github.com/aniruddhaadak80/mintline/actions)
 
-[**Live app**](https://mintline-eight.vercel.app) Â· [**Source**](https://github.com/aniruddhaadak80/mintline) Â· [**API**](https://mintline-eight.vercel.app/api/health) Â· [**Agent**](https://mintline-eight.vercel.app/agent) Â· [**Issues**](https://github.com/aniruddhaadak80/mintline/issues)
+[**Live app**](https://mintline-eight.vercel.app) · [**Source**](https://github.com/aniruddhaadak80/mintline) · [**API**](https://mintline-eight.vercel.app/api/health) · [**Agent**](https://mintline-eight.vercel.app/agent) · [**Issues**](https://github.com/aniruddhaadak80/mintline/issues)
+
+![The assay press striking a specimen for Wrapped SOL: the 52.5 stamp and the six-factor breakdown](screenshots/01-assay-press.png)
+
+<sub>Real output. Wrapped SOL assayed against live Solana data, scored 52.5. The stamp ink is driven by the score.</sub>
 
 </div>
 
@@ -28,7 +32,7 @@ replay.
 ## The problem
 
 Solana launchpads mint thousands of tokens a day. Copying an established
-project's name and ticker is trivial, costs nothing, and is hard to spot â€” the
+project's name and ticker is trivial, costs nothing, and is hard to spot — the
 copy looks like a brand-new asset until someone loses money.
 
 Today the answer is "ask in the group chat". That does not scale, does not
@@ -38,10 +42,10 @@ Mintline turns that into a registry: on-chain identity is decoded, compared
 against everything already claimed, scored with a published formula, and sealed
 into a chain that a third party can replay without trusting this app.
 
-## âœ¨ Features
+## ✨ Features
 
 - **Decodes the chain itself.** Derives the Metaplex metadata account for a mint
-  with hand-rolled ed25519 curve maths and borsh decoding â€” no indexer key, no
+  with hand-rolled ed25519 curve maths and borsh decoding — no indexer key, no
   wallet, no SDK. [Source](src/lib/solana/address.ts)
 - **Runs the model on your machine.** A 22M-parameter sentence-embedding model
   loads in the browser via ONNX Runtime Web. The token's identity text never
@@ -67,7 +71,7 @@ into a chain that a third party can replay without trusting this app.
   per-source attribution with fetch timestamps, the full seal list and the
   disclaimer as Markdown or JSON.
 
-## ðŸš€ Quickstart
+## 🚀 Quickstart
 
 ```bash
 git clone https://github.com/aniruddhaadak80/mintline.git
@@ -76,7 +80,7 @@ npm install
 npm run dev
 ```
 
-Open <http://localhost:3000>. **Zero environment variables are required** â€” with
+Open <http://localhost:3000>. **Zero environment variables are required** — with
 no `DATABASE_URL` the app runs on an embedded PGlite database in
 `.mintline-data/`, and the full loop (CRUD, engine, MCP, replay, export) works.
 
@@ -97,7 +101,7 @@ node scripts/smoke.mjs        # boots its own server, walks the whole journey
 
 See [`.env.example`](.env.example). Values are never committed.
 
-## ðŸ”Œ API
+## 🔌 API
 
 Every endpoint is JSON, every error uses the same envelope, and every response
 is scoped to the caller's anonymous session.
@@ -160,8 +164,8 @@ curl -s -b jar -X DELETE "https://mintline-eight.vercel.app/api/origins/$ID" \
              "details": { "field": "mint" } } }
 ```
 
-`400` malformed input Â· `404` absent **or owned by another session** Â· `409`
-conflict Â· `429` rate limited Â· `500` generic, never leaking internals.
+`400` malformed input · `404` absent **or owned by another session** · `409`
+conflict · `429` rate limited · `500` generic, never leaking internals.
 
 ### Agent interface
 
@@ -187,10 +191,10 @@ curl -s -X POST https://mintline-eight.vercel.app/api/mcp \
 
 Point a client at [`/mcp.json`](https://mintline-eight.vercel.app/mcp.json), which
 carries the live endpoint. Try it in the browser at
-[`/agent`](https://mintline-eight.vercel.app/agent) â€” every button there is a real
+[`/agent`](https://mintline-eight.vercel.app/agent) — every button there is a real
 request and prints the real response, including JSON-RPC errors.
 
-## ðŸ“ Project map
+## 📁 Project map
 
 ### User routes
 
@@ -245,12 +249,12 @@ graph LR
   Browser["Browser"] -->|paste mint| Press["Assay press"]
   Press -->|POST /api/assay| Route["Next.js route handlers"]
   Route --> Service["assay-service"]
-  Service --> Engine["runAssay Â· pure"]
+  Service --> Engine["runAssay · pure"]
   Service --> Repo["repository service"]
   Route --> Repo
   Repo --> Neon[("Neon Postgres")]
   Repo -.->|"no DATABASE_URL"| PGlite[("Embedded PGlite")]
-  Press -.->|"embeddings Â· no network"| Model["all-MiniLM-L6-v2<br/>ONNX in tab"]
+  Press -.->|"embeddings · no network"| Model["all-MiniLM-L6-v2<br/>ONNX in tab"]
   Engine --> Score["versioned result"]
   Score --> Press
 
@@ -283,14 +287,14 @@ graph TB
   Facts --> C4["market_age 0.10"]
   Facts --> C5["metadata_completeness 0.12"]
   Claims --> C6["claim_evidence 0.10"]
-  C1 --> Sum["Î£ weight Ã— value Ã— 100"]
+  C1 --> Sum["Σ weight × value × 100"]
   C2 --> Sum
   C3 --> Sum
   C4 --> Sum
   C5 --> Sum
   C6 --> Sum
   Sum --> Band["verdict band"]
-  Band --> Out["score Â· factors Â· evidence<br/>recommendation Â· degraded flag"]
+  Band --> Out["score · factors · evidence<br/>recommendation · degraded flag"]
 
   classDef eng fill:#a78bfa,stroke:#6d28d9,color:#2e1065
   classDef live fill:#22d3ee,stroke:#0e7490,color:#042f2e
@@ -302,13 +306,13 @@ graph TB
 
 | Band | Score | Meaning |
 | --- | --- | --- |
-| `attested_origin` | 75â€“100 | No meaningful collision, real depth, inspectable identity. |
-| `unregistered` | 55â€“74 | No collision, but the evidence is incomplete. |
-| `collision_suspected` | 35â€“54 | Identity text resembles a registered origin. |
-| `impersonation_likely` | 0â€“34 | Strong collision, thin independent evidence. |
+| `attested_origin` | 75–100 | No meaningful collision, real depth, inspectable identity. |
+| `unregistered` | 55–74 | No collision, but the evidence is incomplete. |
+| `collision_suspected` | 35–54 | Identity text resembles a registered origin. |
+| `impersonation_likely` | 0–34 | Strong collision, thin independent evidence. |
 
 A factor that cannot be measured is marked `unavailable`, contributes zero and
-sets `degraded: true`. The remaining weights are **not** renormalised â€” a missing
+sets `degraded: true`. The remaining weights are **not** renormalised — a missing
 holder reading must lower confidence, not inflate the score.
 
 ## Data provenance
@@ -318,7 +322,7 @@ graph LR
   RPC["Solana RPC<br/>no key"] --> Norm["normalize in<br/>src/lib/types.ts"]
   Dex["DexScreener<br/>no key"] --> Norm
   Jup["Jupiter price API<br/>no key"] --> Norm
-  Norm --> Sources["per-source attribution<br/>status Â· fetchedAt Â· endpoint"]
+  Norm --> Sources["per-source attribution<br/>status · fetchedAt · endpoint"]
   Norm --> Engine["engine"]
   Alt{"all sources<br/>down?"}
   Alt -->|no| Sources
@@ -341,7 +345,7 @@ divergence between two sources is visible rather than averaged away.
 
 Every source carries `status`, `fetchedAt` and its endpoint. When all of them are
 unreachable, mints with a sealed sample return it flagged `fallback` with the
-capture timestamp â€” never as current data, and never merged into a stored claim.
+capture timestamp — never as current data, and never merged into a stored claim.
 
 `getTokenLargestAccounts` is rate limited on the public RPC, so holder
 concentration is explicitly `state: "unavailable"` with a reason when it cannot
@@ -398,7 +402,7 @@ sequenceDiagram
   C->>M: tools/list
   M-->>C: 10 typed schemas
   C->>M: tools/call assay_mint
-  M-->>C: score Â· factors Â· comparator
+  M-->>C: score · factors · comparator
   C->>M: tools/call register_origin
   M->>S: same call the UI makes
   S->>D: INSERT origin + chain event 1
@@ -462,7 +466,7 @@ npm run build       # next build
 node scripts/smoke.mjs   # 91-check journey over real HTTP
 ```
 
-The suite covers the engine (weights sum to 1, bands tile 0â€“100, determinism,
+The suite covers the engine (weights sum to 1, bands tile 0–100, determinism,
 degradation, NaN safety, degenerate inputs), canonical JSON and the seal chain
 (tampered payload, rewritten seal, removed event, foreign genesis, reordered
 storage), the on-chain maths (PDA derivation against **addresses observed on
@@ -472,10 +476,10 @@ MCP contract (JSON-RPC error codes, tool schemas, and that a mutation over RPC
 is visible through the REST API).
 
 `scripts/smoke.mjs` boots a real production server and walks the entire loop:
-create â†’ read back â†’ decide â†’ engine â†’ MCP mutation â†’ replay â†’ export â†’ delete â†’
+create → read back → decide → engine → MCP mutation → replay → export → delete →
 confirm the tombstone still replays.
 
-## ðŸš€ Deployment
+## 🚀 Deployment
 
 `DATABASE_URL` must be set. On Vercel, attach a Neon Postgres project and the
 variable is injected automatically. `SESSION_SECRET` should be set so sessions
@@ -484,9 +488,9 @@ survive a redeploy. `NEXT_PUBLIC_SITE_URL` should be the real production alias.
 The app is stateless apart from Postgres, so it scales horizontally. `neon()`
 uses the pooled endpoint, which is what serverless wants.
 
-## ðŸ—ºï¸ Roadmap
+## 🗺️ Roadmap
 
-**Now â€” shipped**
+**Now — shipped**
 
 - [x] On-chain Metaplex decode with no indexer key, so a claim is grounded in chain state
 - [x] Two comparators: a deterministic server default and an on-device neural upgrade
@@ -497,14 +501,14 @@ uses the pooled endpoint, which is what serverless wants.
 
 **Next**
 
-- [ ] **Registry-wide collision search** â€” find every pair of registered origins
+- [ ] **Registry-wide collision search** — find every pair of registered origins
       whose identity text overlaps, so a launchpad can audit its whole board at
       once instead of one mint at a time
-- [ ] **Watcher for newly deployed mints** â€” a `/watch` route that polls a mint's
+- [ ] **Watcher for newly deployed mints** — a `/watch` route that polls a mint's
       metadata for changes and appends a sealed event when the name, URI or
       update authority moves, so an impersonation attempt becomes visible as a
       dated diff
-- [ ] **Signed origin statements** â€” let an issuer publish a detached attestation
+- [ ] **Signed origin statements** — let an issuer publish a detached attestation
       that a visitor can verify locally, so a claim is corroborated by something
       other than Mintline's own score
 
@@ -520,12 +524,12 @@ graph LR
 
 **Later**
 
-- [ ] **Editions** â€” have any observer append a signed observation to an existing
+- [ ] **Editions** — have any observer append a signed observation to an existing
       record's chain, so a registry can accumulate evidence without any single
       party controlling it
-- [ ] **Portable chain export** â€” emit a record's events as a standalone
+- [ ] **Portable chain export** — emit a record's events as a standalone
       verifiable bundle, so a claim can leave this app and still be checked
-- [ ] **Other chains** â€” the address maths and the chain rule are already
+- [ ] **Other chains** — the address maths and the chain rule are already
       generic; an EVM implementation would prove the design is not Solana-shaped
 
 ```mermaid
@@ -539,31 +543,31 @@ graph TB
 
 ## Third-party attribution
 
-- [Solana](https://solana.com) â€” RPC and on-chain state
-- [DexScreener](https://dexscreener.com) â€” market structure
-- [Jupiter](https://docs.jup.ag) â€” independent price corroboration
-- [`Xenova/all-MiniLM-L6-v2`](https://huggingface.co/Xenova/all-MiniLM-L6-v2) â€”
+- [Solana](https://solana.com) — RPC and on-chain state
+- [DexScreener](https://dexscreener.com) — market structure
+- [Jupiter](https://docs.jup.ag) — independent price corroboration
+- [`Xenova/all-MiniLM-L6-v2`](https://huggingface.co/Xenova/all-MiniLM-L6-v2) —
   Apache-2.0 sentence embeddings, run in the visitor's browser via
   [transformers.js](https://github.com/huggingface/transformers.js)
-- [Neon](https://neon.tech) â€” hosted Postgres Â· [PGlite](https://pglite.dev) â€” embedded Postgres
-- [Metaplex](https://metaplex.com) â€” Token Metadata account layout
+- [Neon](https://neon.tech) — hosted Postgres · [PGlite](https://pglite.dev) — embedded Postgres
+- [Metaplex](https://metaplex.com) — Token Metadata account layout
 
-## âš ï¸ Disclaimer
+## ⚠️ Disclaimer
 
 Mintline measures observable structure: name collisions, metadata completeness,
 market depth, holder concentration and trading age. It **does not predict price**,
 does **not** evaluate whether a token is a good investment, and is **not financial
 advice**. A high provenance score means an identity is not obviously impersonating
-another â€” it is not an endorsement of the project behind it. Verify anything that
+another — it is not an endorsement of the project behind it. Verify anything that
 matters against the issuer directly.
 
-## ðŸ¤ Contributing
+## 🤝 Contributing
 
 Issues and pull requests are welcome. Read
-[CONTRIBUTING.md](CONTRIBUTING.md) first â€” especially the eight rules that are
+[CONTRIBUTING.md](CONTRIBUTING.md) first — especially the eight rules that are
 not negotiable, such as "one engine" and "never present a missing reading as a
 zero". Security reports go through [SECURITY.md](SECURITY.md), not a public issue.
 
-## ðŸ“„ License
+## 📄 License
 
-[MIT](LICENSE) Â© 2026 Aniruddha Adak
+[MIT](LICENSE) © 2026 Aniruddha Adak
