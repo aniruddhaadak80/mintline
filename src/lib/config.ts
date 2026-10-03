@@ -13,8 +13,15 @@ export const SITE = {
   tagline: "Prove which Solana token came first.",
   description:
     "A public, hash-chained origin registry for Solana token identities. Mintline decodes on-chain metadata, finds semantic collisions with an open-weight model that runs in your browser, and records every claim in a tamper-evident ledger anyone can replay.",
-  /** Overridden at build time so the canonical URL is never guessed. */
-  liveUrl: process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "http://localhost:3000",
+  /**
+   * Canonical origin for metadata, OpenGraph, sitemap and share links.
+   *
+   * Overridden at build time by `NEXT_PUBLIC_SITE_URL`. The fallback below is the
+   * verified production alias of this project's deployment — `mintline.vercel.app`
+   * belongs to an unrelated project, so it must never be assumed.
+   */
+  liveUrl:
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? "https://mintline-eight.vercel.app",
   repositoryUrl: "https://github.com/aniruddhaadak80/mintline",
   issuesUrl: "https://github.com/aniruddhaadak80/mintline/issues",
   license: "MIT",

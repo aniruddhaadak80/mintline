@@ -1,7 +1,7 @@
-{
+﻿{
   "$schema": "https://json.schemastore.org/mcp.json",
   "name": "mintline",
-  "displayName": "Mintline — Solana origin registry",
+  "displayName": "Mintline â€” Solana origin registry",
   "version": "1.0.0",
   "description": "Assay Solana token identities for name collisions against a public, hash-chained origin registry. Reads live on-chain Metaplex metadata, returns an explainable provenance score, and records claims through a tamper-evident SHA-384 audit chain. No wallet, no API key, and no server-side inference.",
   "publisher": {
@@ -67,7 +67,7 @@
     {
       "type": "streamable-http",
       "transport": "streamable-http",
-      "url": "https://mintline.vercel.app/api/mcp",
+      "url": "https://mintline-eight.vercel.app/api/mcp",
       "headers": [],
       "description": "Production endpoint. Session ownership is a signed HTTP-only cookie; a client that keeps cookies gets its own isolated scope."
     }

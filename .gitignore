@@ -53,3 +53,4 @@ yarn-error.log*
 /playwright-report/
 /blob-report/
 /screenshots/*.tmp.png
+.vercel
