@@ -149,9 +149,14 @@ if (BOOT) await boot();
 /* 2. Health --------------------------------------------------------- */
 let health;
 {
-  const result = await call("GET", "/api/health");
-  health = result.json;
-  record("GET /api/health returns 200", result.status === 200, `status ${result.status}`);
+  const healthResult = await call("GET", "/api/health");
+  health = healthResult.json;
+  // Surface the store failure verbatim: a bare 503 says nothing about why.
+  record(
+    "GET /api/health returns 200",
+    healthResult.status === 200,
+    `status ${healthResult.status} adapter=${healthResult.json?.store?.adapter} error=${healthResult.json?.store?.error ?? "none"}`,
+  );
   record("health reports a real store check", health?.store?.reachable === true);
   record("health names the adapter in use", typeof health?.store?.adapter === "string");
 }
