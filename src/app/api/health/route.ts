@@ -16,10 +16,10 @@ export const dynamic = "force-dynamic";
 export async function GET() {
   try {
     const store = await checkStore();
-    const productionGuard = assertProductionStore();
+    const guard = assertProductionStore();
     const deployed = isServerlessRuntime();
 
-    const healthy = store.ok && productionGuard.ok;
+    const healthy = store.ok && guard.ok;
 
     return Response.json(
       {
@@ -30,8 +30,13 @@ export async function GET() {
           reachable: store.ok,
           roundTripMs: store.roundTripMs,
           ...(store.error ? { error: store.error } : {}),
-          productionGuard: productionGuard.ok ? "pass" : "fail",
-          ...(productionGuard.reason ? { productionGuardReason: productionGuard.reason } : {}),
+          /**
+           * True when this deployment is running on the embedded adapter rather
+           * than a hosted store. Reported plainly instead of being hidden.
+           */
+          embeddedAdapter: guard.embeddedFallback,
+          ephemeralGuard: guard.ok ? "pass" : "fail",
+          ...(guard.reason ? { ephemeralGuardReason: guard.reason } : {}),
           schemaApplied: store.ok,
         },
         runtime: {

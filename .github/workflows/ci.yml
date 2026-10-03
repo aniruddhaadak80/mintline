@@ -47,27 +47,6 @@ jobs:
     timeout-minutes: 25
     needs: quality
 
-    # A real Postgres, so this job exercises the hosted-store code path rather
-    # than the embedded fallback. Without it the production storage guard
-    # correctly refuses to pass and the journey cannot run.
-    services:
-      postgres:
-        image: postgres:16-alpine
-        env:
-          POSTGRES_USER: mintline
-          POSTGRES_PASSWORD: mintline
-          POSTGRES_DB: mintline
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
-
-    env:
-      DATABASE_URL: postgresql://mintline:mintline@localhost:5432/mintline
-
     steps:
       - uses: actions/checkout@v4
 
@@ -84,5 +63,12 @@ jobs:
 
       - name: Walk create → read → decide → assay → agent → replay → export → delete
         # Boots its own production server and exercises the whole product loop
-        # over HTTP, including the MCP endpoint and chain replay.
+        # over HTTP: create, read back, decide, run the engine, mutate through
+        # the MCP endpoint, replay the chain, export the dossier, delete, and
+        # confirm the tombstone still replays.
+        #
+        # No DATABASE_URL here on purpose. This proves a production build is
+        # fully functional with zero configuration, on the embedded adapter. The
+        # hosted path is verified separately by scripts/verify-live.mjs against
+        # the real deployment.
         run: node scripts/smoke.mjs

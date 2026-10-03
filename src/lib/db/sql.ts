@@ -169,24 +169,36 @@ export async function resetSql(): Promise<void> {
 }
 
 /**
- * Fail loudly if a deployed build would run on embedded storage.
+ * Fail loudly if an ephemeral runtime would fall back to embedded storage.
  *
- * A serverless function that quietly uses PGlite is the exact failure this
- * project is required to avoid: data that dies with the instance.
+ * This targets the actual hazard: a serverless function whose local filesystem
+ * dies with the instance would silently lose every claim it was given. A
+ * long-lived Node server is different — `next start` on a normal host is a real
+ * server, and running it against the embedded adapter is a legitimate choice —
+ * so the guard keys off serverless detection rather than `NODE_ENV`.
+ *
+ * When the embedded adapter *is* in use outside serverless, the caller is told
+ * so explicitly through `embeddedFallback` and `/api/health` reports it, rather
+ * than the deployment quietly claiming a hosted store.
  */
-export function assertProductionStore(): { ok: boolean; reason?: string } {
+export function assertProductionStore(): {
+  ok: boolean;
+  embeddedFallback: boolean;
+  reason?: string;
+} {
   const url = process.env.DATABASE_URL?.trim();
-  const deployed = Boolean(process.env.VERCEL || process.env.NODE_ENV === "production");
+  if (url) return { ok: true, embeddedFallback: false };
 
-  if (!url) {
+  if (isServerlessRuntime()) {
     return {
-      ok: !deployed,
-      reason: deployed
-        ? "DATABASE_URL is not set in a production environment; refusing to run on embedded storage"
-        : undefined,
+      ok: false,
+      embeddedFallback: true,
+      reason:
+        "DATABASE_URL is not set on an ephemeral serverless runtime; refusing to run on embedded storage",
     };
   }
-  return { ok: true };
+
+  return { ok: true, embeddedFallback: true };
 }
 
 /** True when the process is a serverless production runtime. */

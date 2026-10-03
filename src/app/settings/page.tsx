@@ -74,6 +74,11 @@ export default async function SettingsPage() {
           <p className="mt-1 font-mono text-[0.68rem] text-bone-faint">
             {store.ok ? `round trip ${store.roundTripMs}ms` : (store.error ?? "unreachable")}
           </p>
+          <p className="mt-1 font-mono text-[0.68rem] text-bone-faint">
+            {store.adapter === "neon"
+              ? "hosted Postgres via the Neon HTTP driver"
+              : "embedded PGlite — ephemeral, local or preview use"}
+          </p>
         </div>
         <div className="bg-ground p-4">
           <p className="marginalia">claims visible</p>

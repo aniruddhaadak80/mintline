@@ -95,7 +95,7 @@ node scripts/smoke.mjs        # boots its own server, walks the whole journey
 
 | Variable | Required | Purpose |
 | --- | --- | --- |
-| `DATABASE_URL` | **yes** | Postgres connection string. On Vercel this is usually injected by the Neon integration. `/api/health` fails the deployment if a serverless runtime has no hosted store. |
+| `DATABASE_URL` | **yes in production** | Neon Postgres connection string, reached through the Neon HTTP driver. `/api/health` returns 503 if an ephemeral serverless runtime has none. Omit it and a long-lived Node server runs on the embedded adapter, which `/api/health` reports as `embeddedAdapter: true`. |
 | `SESSION_SECRET` | recommended | Signs the anonymous session cookie. Without it a random per-process key is generated, so sessions do not survive a redeploy. |
 | `NEXT_PUBLIC_SITE_URL` | recommended | Canonical origin for metadata, OpenGraph, sitemap and share links. |
 
