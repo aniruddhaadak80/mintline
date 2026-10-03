@@ -1,0 +1,221 @@
+@import "tailwindcss";
+
+/*
+ * Mintline — assay office.
+ *
+ * Identity: an archival assay office. A claim about a token's origin has to be
+ * stamped and filed to matter, so the interface is ruled ledger paper in deep
+ * patina with brass rules, oxide-red risk marks, and a specimen-card surface.
+ *
+ * Motion metaphor: pressing a stamp. Short compress-and-release, never bouncy.
+ *
+ * Palette is deliberately unlike the usual crypto-dark-neon: no violet/cyan
+ * gradients, no glass. Warm metal on cold oxidised green.
+ */
+
+@theme {
+  --color-ground: #0a1a1a;
+  --color-ground-deep: #061111;
+  --color-surface: #102727;
+  --color-surface-raised: #163232;
+  --color-surface-sunken: #0c2020;
+
+  --color-brass: #d9a441;
+  --color-brass-dim: #8a6a2a;
+  --color-brass-bright: #f0c76e;
+
+  --color-oxide: #c1502e;
+  --color-oxide-dim: #7a3520;
+  --color-oxide-bright: #e07048;
+
+  --color-verdigris: #5f9e8f;
+  --color-verdigris-dim: #3c6b60;
+
+  --color-bone: #e9e3d5;
+  --color-bone-dim: #b8b2a4;
+  --color-bone-faint: #8b867a;
+
+  --color-ink: #060f0f;
+
+  --font-display: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  --font-mono: var(--font-dm-mono), "DM Mono", ui-monospace, monospace;
+
+  --radius-card: 2px;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  background-color: var(--color-ground);
+  /* Ledger ruling. Fixed so the page reads as ruled stock, not a scrolling grid. */
+  background-image:
+    linear-gradient(to bottom, rgba(217, 164, 65, 0.055) 1px, transparent 1px),
+    linear-gradient(to right, rgba(217, 164, 65, 0.03) 1px, transparent 1px);
+  background-size: 100% 34px, 68px 100%;
+  background-attachment: fixed;
+}
+
+body {
+  background: transparent;
+  color: var(--color-bone);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Focus: a brass rule, never a browser default that disappears on dark ground. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-brass);
+  outline-offset: 2px;
+  border-radius: 1px;
+}
+
+::selection {
+  background: var(--color-brass);
+  color: var(--color-ink);
+}
+
+/* ---------------------------------------------------------------- *
+ * Components
+ * ---------------------------------------------------------------- */
+
+/* Specimen card: the stamped surface a claim is filed on. */
+@utility specimen {
+  background-color: var(--color-surface);
+  border: 1px solid color-mix(in oklab, var(--color-brass) 26%, transparent);
+  border-radius: var(--radius-card);
+  position: relative;
+}
+
+/* A single hairline brass rule, the ledger's horizontal division. */
+@utility rule-brass {
+  border-color: color-mix(in oklab, var(--color-brass) 30%, transparent);
+}
+
+/* Marginalia: the small mono label in the gutter of every ledger row. */
+@utility marginalia {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-bone-faint);
+}
+
+/* Ledger row: the repeated unit of the registry table. */
+@utility ledger-row {
+  border-bottom: 1px solid color-mix(in oklab, var(--color-brass) 16%, transparent);
+  transition: background-color 140ms ease;
+}
+
+@utility ledger-row-hover {
+  &:hover {
+    background-color: color-mix(in oklab, var(--color-brass) 7%, transparent);
+  }
+}
+
+/* The pressed stamp. Rotates slightly and inverts, like ink on metal. */
+@utility stamp-mark {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border: 2px solid currentColor;
+  border-radius: 2px;
+  padding: 0.15rem 0.5rem;
+  display: inline-block;
+  transform: rotate(-2.5deg);
+}
+
+/* Brass text used for verified/attested states. */
+@utility ink-brass {
+  color: var(--color-brass);
+}
+
+@utility ink-oxide {
+  color: var(--color-oxide-bright);
+}
+
+@utility ink-verdigris {
+  color: var(--color-verdigris);
+}
+
+/* A recessed well for raw data, JSON and seals. */
+@utility well {
+  background-color: var(--color-surface-sunken);
+  border: 1px solid color-mix(in oklab, var(--color-brass) 18%, transparent);
+  border-radius: var(--radius-card);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--color-bone-dim);
+}
+
+/* ---------------------------------------------------------------- *
+ * Motion
+ * ---------------------------------------------------------------- */
+
+@keyframes mintline-press {
+  0% {
+    transform: scale(1.22) rotate(-7deg);
+    opacity: 0;
+  }
+  55% {
+    transform: scale(0.96) rotate(-1deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(-2.5deg);
+    opacity: 1;
+  }
+}
+
+@keyframes mintline-file-in {
+  from {
+    transform: translateY(6px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes mintline-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(220%);
+  }
+}
+
+.animate-press {
+  animation: mintline-press 420ms cubic-bezier(0.2, 0.9, 0.25, 1) both;
+}
+
+.animate-file-in {
+  animation: mintline-file-in 260ms ease-out both;
+}
+
+.animate-sweep {
+  animation: mintline-sweep 1.4s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-press,
+  .animate-file-in,
+  .animate-sweep {
+    animation: none !important;
+  }
+
+  html {
+    background-attachment: scroll;
+  }
+}
+
+/* Scrollbars that do not break the palette. */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in oklab, var(--color-brass) 35%, transparent) transparent;
+}

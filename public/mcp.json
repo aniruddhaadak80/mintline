@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json.schemastore.org/mcp.json",
+  "name": "mintline",
+  "displayName": "Mintline — Solana origin registry",
+  "version": "1.0.0",
+  "description": "Assay Solana token identities for name collisions against a public, hash-chained origin registry. Reads live on-chain Metaplex metadata, returns an explainable provenance score, and records claims through a tamper-evident SHA-384 audit chain. No wallet, no API key, and no server-side inference.",
+  "publisher": {
+    "name": "Aniruddha Adak",
+    "url": "https://github.com/aniruddhaadak80"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aniruddhaadak80/mintline"
+  },
+  "websiteUrl": "https://github.com/aniruddhaadak80/mintline#readme",
+  "documentationUrl": "https://github.com/aniruddhaadak80/mintline#-api",
+  "license": "MIT",
+  "capabilities": {
+    "tools": true,
+    "resources": false,
+    "prompts": false,
+    "logging": false
+  },
+  "tools": [
+    {
+      "name": "assay_mint",
+      "description": "Decode on-chain metadata for a Solana mint, compare its identity text against the origin registry, and return a versioned, explainable provenance score with itemized factors. Read-only."
+    },
+    {
+      "name": "get_live_market",
+      "description": "Return normalized live facts for a mint: decoded Metaplex metadata, trading pairs, liquidity, volume, age, holder concentration, and per-source attribution with fetch timestamps. Read-only."
+    },
+    {
+      "name": "list_origins",
+      "description": "List origin claims visible to the calling session, including the shared reference registry. Supports paging, status filter, text search and sorting by score. Read-only."
+    },
+    {
+      "name": "get_origin",
+      "description": "Return a single origin claim with its stored assay, optionally including the full audit chain. Read-only."
+    },
+    {
+      "name": "verify_integrity",
+      "description": "Recompute every seal in an origin's audit chain and report the first broken link. Read-only."
+    },
+    {
+      "name": "register_origin",
+      "description": "Create a new origin claim after running the assay against live chain data. Writes through the same service layer as the UI and appends a sealed audit event. Idempotent with idempotency_key."
+    },
+    {
+      "name": "record_verdict",
+      "description": "Set an origin claim to registered, disputed or retired, optionally attaching a note. Appends a sealed audit event."
+    },
+    {
+      "name": "share_origin",
+      "description": "Issue or revoke an unguessable share token, producing a stable public read-only dossier URL."
+    },
+    {
+      "name": "export_dossier",
+      "description": "Produce the downloadable origin dossier as Markdown or JSON, including factors, source attribution and the seal chain. Read-only."
+    },
+    {
+      "name": "retire_origin",
+      "description": "Soft-delete an origin claim, retaining a tombstone so the audit chain can still be replayed. Destructive."
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "transport": "streamable-http",
+      "url": "https://mintline.vercel.app/api/mcp",
+      "headers": [],
+      "description": "Production endpoint. Session ownership is a signed HTTP-only cookie; a client that keeps cookies gets its own isolated scope."
+    }
+  ]
+}
