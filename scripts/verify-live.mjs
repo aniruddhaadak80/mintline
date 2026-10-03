@@ -108,7 +108,8 @@ console.log(`\nMintline live verification — ${BASE}\n`);
     typeof health.json?.store?.adapter === "string" && health.json.store.adapter !== "pglite",
     `adapter=${health.json?.store?.adapter}`,
   );
-  check("production storage guard passed", health.json?.store?.productionGuard === "pass");
+  check("ephemeral-runtime storage guard passed", health.json?.store?.ephemeralGuard === "pass", health.json?.store?.ephemeralGuardReason ?? "");
+  check("a hosted store is in use, not the embedded adapter", health.json?.store?.embeddedAdapter === false);
 }
 
 /* 3. Live data with attribution -------------------------------------- */
